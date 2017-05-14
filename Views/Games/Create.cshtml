@@ -1,0 +1,66 @@
+@model foosball_asp.Models.CreateGameViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Game</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6">
+            <h3>Red Team</h3>
+            <div class="form-group">
+                <label asp-for="RedTeam.GoalieId" class="control-label"></label>
+                <select asp-for="RedTeam.GoalieId" asp-items="Model.Users"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RedTeam.DefenderId" class="control-label"></label>
+                <select asp-for="RedTeam.DefenderId" asp-items="Model.Users"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RedTeam.CenterId" class="control-label"></label>
+                <select asp-for="RedTeam.CenterId" asp-items="Model.Users"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RedTeam.StrikerId" class="control-label"></label>
+                <select asp-for="RedTeam.StrikerId" asp-items="Model.Users"></select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Blue Team</h3>
+            <div class="form-group">
+                <label asp-for="BlueTeam.GoalieId" class="control-label"></label>
+                <select asp-for="BlueTeam.GoalieId" asp-items="Model.Users"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlueTeam.DefenderId" class="control-label"></label>
+                <select asp-for="BlueTeam.DefenderId" asp-items="Model.Users"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlueTeam.CenterId" class="control-label"></label>
+                <select asp-for="BlueTeam.CenterId" asp-items="Model.Users"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlueTeam.StrikerId" class="control-label"></label>
+                <select asp-for="BlueTeam.StrikerId" asp-items="Model.Users"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-12">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
