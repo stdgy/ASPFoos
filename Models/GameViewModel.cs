@@ -14,6 +14,7 @@ namespace foosball_asp.Models
     class PlayerViewModel
     {
         public int PlayerId { get; set; }
+        public string Username { get; set; }
         public int Score { get; set; }
     }
 
