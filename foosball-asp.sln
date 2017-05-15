@@ -1,7 +1,9 @@
-
-Microsoft Visual Studio Solution File, Format Version 15.00
-# Visual Studio 2017
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "foosball-asp", "foosball-asp.csproj", "{3DC0660D-AD8A-449E-8B59-F3C423DB7027}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "foosball-asp", "foosball-asp.csproj", "{CC3AB37B-7217-4347-940F-B4F20E765185}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,9 +11,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3DC0660D-AD8A-449E-8B59-F3C423DB7027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DC0660D-AD8A-449E-8B59-F3C423DB7027}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DC0660D-AD8A-449E-8B59-F3C423DB7027}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DC0660D-AD8A-449E-8B59-F3C423DB7027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC3AB37B-7217-4347-940F-B4F20E765185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC3AB37B-7217-4347-940F-B4F20E765185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC3AB37B-7217-4347-940F-B4F20E765185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC3AB37B-7217-4347-940F-B4F20E765185}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
