@@ -8,7 +8,7 @@ using foosball_asp.Models;
 namespace foosballasp.Migrations
 {
     [DbContext(typeof(FoosContext))]
-    [Migration("20170415053712_Initial")]
+    [Migration("20170515045639_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace foosballasp.Migrations
 
                     b.Property<int>("Type");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -101,13 +101,14 @@ namespace foosballasp.Migrations
             modelBuilder.Entity("foosball_asp.Models.Player", b =>
                 {
                     b.HasOne("foosball_asp.Models.Team", "Team")
-                        .WithMany()
+                        .WithMany("Players")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("foosball_asp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("foosball_asp.Models.Score", b =>
