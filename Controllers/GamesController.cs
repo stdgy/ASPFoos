@@ -129,7 +129,18 @@ namespace foosball_asp.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games.SingleOrDefaultAsync(m => m.Id == id);
+            // Make sure we use includes to gather all related data that we'll need
+            // to construct the view model below.
+            var game = await _context.Games
+                .Where(g => g.Id == id)
+                .Include(g => g.Teams)
+                    .ThenInclude(t => t.Players)
+                        .ThenInclude(p => p.Scores)
+                .Include(g => g.Teams)
+                    .ThenInclude(t => t.Players)
+                        .ThenInclude(p => p.User)
+                .SingleOrDefaultAsync();
+
             if (game == null)
             {
                 return NotFound();
