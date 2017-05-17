@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace foosball_asp.Models 
 {
-    class ScoreViewModel
+    public class ScoreViewModel
     {
         public string Username { get; set; }
         public string Position { get; set; }
@@ -11,14 +11,14 @@ namespace foosball_asp.Models
         public bool OwnGoal { get; set; }
     }
 
-    class PlayerViewModel
+    public class PlayerViewModel
     {
         public int PlayerId { get; set; }
         public string Username { get; set; }
         public int Score { get; set; }
     }
 
-    class TeamViewModel
+    public class TeamViewModel
     {
         public PlayerViewModel Goalie { get; set; }
         public PlayerViewModel Defender { get; set; }
@@ -26,7 +26,7 @@ namespace foosball_asp.Models
         public PlayerViewModel Striker { get; set; }
     }
     
-    class GameViewModel 
+    public class GameViewModel 
     {
         public TeamViewModel RedTeam { get; set; }
         public TeamViewModel BlueTeam { get; set; }

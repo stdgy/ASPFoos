@@ -233,7 +233,7 @@ namespace foosball_asp.Controllers
                 }).ToList()
             };
 
-            return View(game);
+            return View(gvm);
         }
 
         // POST: Games/Edit/5

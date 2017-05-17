@@ -1,4 +1,4 @@
-@model foosball_asp.Models.Game
+@model foosball_asp.Models.GameViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,33 +6,159 @@
 
 <h2>Edit</h2>
 
-<form asp-action="Edit">
-    <div class="form-horizontal">
-        <h4>Game</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="StartDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+<div class="page-header">Edit Game</div>
+<div class="container">
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Blue Team</h3>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="EndDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="panel-body">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Goalie</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Goalie.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Defender</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Defender.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Center</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Center.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Striker</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Striker.Username
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</form>
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Red Team</h3>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Goalie</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Goalie.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Defender</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Defender.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Center</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Center.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="btn-group" role="group" aria-label="...">
+                                    <button class="btn btn-xs btn-default">Score</button>
+                                    <button class="btn btn-xs btn-danger">Own Goal</button>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <strong>Striker</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Striker.Username
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>
