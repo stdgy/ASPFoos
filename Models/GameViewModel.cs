@@ -9,6 +9,7 @@ namespace foosball_asp.Models
         public string Position { get; set; }
         public DateTime Time { get; set; }
         public bool OwnGoal { get; set; }
+        public TeamType Team { get; set; }
     }
 
     public class PlayerViewModel

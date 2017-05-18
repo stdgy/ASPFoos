@@ -7,7 +7,7 @@
 <h2>Edit</h2>
 
 <div class="page-header">Edit Game</div>
-<div class="container">
+<div class="row">
     <div class="col-md-6">
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -157,6 +157,35 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h2 class="text-center">Scores</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Position</th>
+                    <th>Username</th>
+                    <th>Own Goal</th>
+                    <th>Team</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var score in Model.Scores)
+                {
+                    <tr>
+                        <td>@score.Time</td>
+                        <td>@score.Position</td>
+                        <td>@score.Username</td>
+                        <td>@score.OwnGoal</td>
+                        <td>@score.Team</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 

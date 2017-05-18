@@ -229,7 +229,8 @@ namespace foosball_asp.Controllers
                     Username = s.Player.User.Username,
                     Position = "Placeholder",
                     Time = s.TimeScored,
-                    OwnGoal = s.OwnGoal
+                    OwnGoal = s.OwnGoal,
+                    Team = s.Player.Team.Type
                 }).ToList()
             };
 

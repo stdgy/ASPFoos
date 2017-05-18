@@ -1,9 +1,14 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace foosball_asp.Models 
 {
     public enum TeamType {
+        [DataType(DataType.Text)]
+        [Display(Name = "Blue")]
         Blue,
+        [DataType(DataType.Text)]
+        [Display(Name = "Red")]
         Red
     }
 
