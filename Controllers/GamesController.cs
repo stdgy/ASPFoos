@@ -239,10 +239,40 @@ namespace foosball_asp.Controllers
                     Time = s.TimeScored,
                     OwnGoal = s.OwnGoal,
                     Team = s.Player.Team.Type
-                }).ToList()
+                })
+                .OrderBy(s => s.Time).ToList()
             };
 
             return View(gvm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Goal(int id, int? owngoal)
+        {
+            // Get player with that ID and add a score
+            var player = await _context.Players
+                .Include(p => p.Scores)
+                .Include(p => p.Team)
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            var score = new Score
+            {
+                OwnGoal = owngoal == null ? false : true,
+                PlayerId = id,
+                TimeScored = DateTime.Now
+            };
+
+            await _context.AddAsync(score);
+            await _context.SaveChangesAsync();
+
+            // Redirect back to edit screen 
+            return RedirectToAction("Edit", new { id = player.Team.GameId });
         }
 
         // POST: Games/Edit/5
