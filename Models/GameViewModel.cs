@@ -5,6 +5,7 @@ namespace foosball_asp.Models
 {
     public class ScoreViewModel
     {
+        public int ScoreId { get; set; }
         public string Username { get; set; }
         public PlayerType Position { get; set; }
         public DateTime Time { get; set; }
@@ -30,6 +31,7 @@ namespace foosball_asp.Models
     
     public class GameViewModel 
     {
+        public int GameId { get; set; }
         public TeamViewModel RedTeam { get; set; }
         public TeamViewModel BlueTeam { get; set; }
 

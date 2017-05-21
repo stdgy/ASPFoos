@@ -148,6 +148,7 @@ namespace foosball_asp.Controllers
 
             // Build up a game view model
             var gvm = new GameViewModel {
+                GameId = game.Id,
                 RedTeam = new TeamViewModel {
                     Goalie = new PlayerViewModel {
                         PlayerId = game.Teams.Where(t => t.Type == TeamType.Red).First()
@@ -234,6 +235,7 @@ namespace foosball_asp.Controllers
                 },
                 Scores = game.Teams.SelectMany(t => t.Players).SelectMany(p => p.Scores).Select(s => new ScoreViewModel
                 {
+                    ScoreId = s.Id,
                     Username = s.Player.User.Username,
                     Position = s.Player.Type,
                     Time = s.TimeScored,
@@ -244,35 +246,6 @@ namespace foosball_asp.Controllers
             };
 
             return View(gvm);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Goal(int id, int? owngoal)
-        {
-            // Get player with that ID and add a score
-            var player = await _context.Players
-                .Include(p => p.Scores)
-                .Include(p => p.Team)
-                .SingleOrDefaultAsync(p => p.Id == id);
-
-            if (player == null)
-            {
-                return NotFound();
-            }
-
-            var score = new Score
-            {
-                OwnGoal = owngoal == null ? false : true,
-                PlayerId = id,
-                TimeScored = DateTime.Now
-            };
-
-            await _context.AddAsync(score);
-            await _context.SaveChangesAsync();
-
-            // Redirect back to edit screen 
-            return RedirectToAction("Edit", new { id = player.Team.GameId });
         }
 
         // POST: Games/Edit/5

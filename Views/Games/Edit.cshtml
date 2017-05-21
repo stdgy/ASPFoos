@@ -19,11 +19,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Goalie.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Goal" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Goalie.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -42,11 +42,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Defender.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Defender.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -65,11 +65,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Center.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Center.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -88,11 +88,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Striker.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Striker.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -122,11 +122,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Goalie.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Goalie.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -145,11 +145,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Defender.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Defender.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -168,11 +168,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Center.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Center.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -191,11 +191,11 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="btn-group" role="group" aria-label="...">
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Striker.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Games" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Striker.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -221,6 +221,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <td></td>
                     <th>Time</th>
                     <th>Position</th>
                     <th>Username</th>
@@ -232,6 +233,13 @@
                 @foreach (var score in Model.Scores)
                 {
                     <tr>
+                        <td>
+                            <form asp-controller="Score" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@score.ScoreId" />
+                                <input type="hidden" name="gameId" value="@Model.GameId" />
+                                <button class="btn btn-danger btn-xs">Delete</button>
+                            </form>
+                        </td>
                         <td>@score.Time</td>
                         <td>@score.Position</td>
                         <td>@score.Username</td>
