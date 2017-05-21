@@ -4,9 +4,18 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<div class="page-header">Edit Game</div>
+<div class="page-header"><h1>Game <small>Ongoing</small> </h1></div>
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <form asp-controller="Games" asp-action="Finish" method="post">
+            <input type="hidden" name="id" value="@Model.GameId" />
+            <button class="btn btn-default">End Game</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div>&nbsp;</div>
+</div>
 <div class="row">
     <div class="col-md-6">
         <div class="panel panel-info">
@@ -17,7 +26,7 @@
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Goalie.PlayerId" />
@@ -30,7 +39,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.BlueTeam.Goalie.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -40,7 +49,7 @@
                     </div>
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Defender.PlayerId" />
@@ -53,7 +62,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.BlueTeam.Defender.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -63,7 +72,7 @@
                     </div>
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Center.PlayerId" />
@@ -76,7 +85,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.BlueTeam.Center.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -86,7 +95,7 @@
                     </div>
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Striker.PlayerId" />
@@ -99,7 +108,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.BlueTeam.Striker.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -120,7 +129,7 @@
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Goalie.PlayerId" />
@@ -133,7 +142,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.RedTeam.Goalie.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -143,7 +152,7 @@
                     </div>
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Defender.PlayerId" />
@@ -156,7 +165,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.RedTeam.Defender.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -166,7 +175,7 @@
                     </div>
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Center.PlayerId" />
@@ -179,7 +188,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.RedTeam.Center.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -189,7 +198,7 @@
                     </div>
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6 col-sm-4">
                                 <div class="btn-group" role="group" aria-label="...">
                                     <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.RedTeam.Striker.PlayerId" />
@@ -202,7 +211,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-xs-4 text-center">
+                            <div class="col-xs-2 col-sm-4 text-center">
                                 <strong>@Model.RedTeam.Striker.Position</strong>
                             </div>
                             <div class="col-xs-4 text-right">
@@ -222,7 +231,7 @@
             <thead>
                 <tr>
                     <td></td>
-                    <th>Time</th>
+                    <th class="hidden-xs">Time</th>
                     <th>Position</th>
                     <th>Username</th>
                     <th>Own Goal</th>
@@ -240,7 +249,7 @@
                                 <button class="btn btn-danger btn-xs">Delete</button>
                             </form>
                         </td>
-                        <td>@score.Time</td>
+                        <td class="hidden-xs">@score.Time</td>
                         <td>@score.Position</td>
                         <td>@score.Username</td>
                         <td>@score.OwnGoal</td>
