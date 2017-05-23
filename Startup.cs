@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using foosball_asp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using foosball_asp.Models;
+using foosball_asp.Services;
 
 namespace foosball_asp
 {
@@ -20,8 +22,16 @@ namespace foosball_asp
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets<Startup>();
+            }
+
+            builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -31,11 +41,16 @@ namespace foosball_asp
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
             services.AddDbContext<FoosContext>(options => options.UseSqlite("Filename=./foos.db"));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<FoosContext>()
                 .AddDefaultTokenProviders();
+            
+            services.AddMvc();
+
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -77,6 +92,7 @@ namespace foosball_asp
             }
 
             app.UseStaticFiles();
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

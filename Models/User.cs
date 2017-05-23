@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 namespace foosball_asp.Models 
 {
     public class User : IdentityUser {
-        public string Username { get; set; }
         [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
     }

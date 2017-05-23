@@ -25,7 +25,7 @@ namespace foosball_asp.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -65,7 +65,7 @@ namespace foosball_asp.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -85,7 +85,7 @@ namespace foosball_asp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Birthdate")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Username,Birthdate")] User user)
         {
             if (id != user.Id)
             {
@@ -116,7 +116,7 @@ namespace foosball_asp.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -136,7 +136,7 @@ namespace foosball_asp.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
             _context.Users.Remove(user);
@@ -144,7 +144,7 @@ namespace foosball_asp.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
         }
