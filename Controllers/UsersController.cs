@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using foosball_asp.Models;
+using foosball_asp.Models.UserViewModels;
 
 namespace foosball_asp.Controllers
 {
@@ -77,7 +78,13 @@ namespace foosball_asp.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+            return View(new UserEditViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                DisplayName = user.DisplayName,
+                Birthdate = user.Birthdate
+            });
         }
 
         // POST: Users/Edit/5
@@ -85,7 +92,7 @@ namespace foosball_asp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Username,Birthdate")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,DisplayName,Birthdate")] UserEditViewModel user)
         {
             if (id != user.Id)
             {
@@ -94,9 +101,20 @@ namespace foosball_asp.Controllers
 
             if (ModelState.IsValid)
             {
+                var u = _context.Users.SingleOrDefault(usermodel => usermodel.Id == id);
+
+                if (u == null)
+                {
+                    return NotFound();
+                }
+
                 try
                 {
-                    _context.Update(user);
+                    u.UserName = user.UserName;
+                    u.DisplayName = user.DisplayName;
+                    u.Birthdate = user.Birthdate;
+
+                    _context.Update(u);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

@@ -1,4 +1,4 @@
-@model foosball_asp.Models.User
+@model foosball_asp.Models.UserViewModels.UserEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,10 +13,17 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
         <div class="form-group">
-            <label asp-for="Username" class="col-md-2 control-label"></label>
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DisplayName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DisplayName" class="form-control" />
+                <span asp-validation-for="DisplayName" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

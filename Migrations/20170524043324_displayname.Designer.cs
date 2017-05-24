@@ -8,9 +8,10 @@ using foosball_asp.Models;
 namespace foosballasp.Migrations
 {
     [DbContext(typeof(FoosContext))]
-    partial class FoosContextModelSnapshot : ModelSnapshot
+    [Migration("20170524043324_displayname")]
+    partial class displayname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2");
