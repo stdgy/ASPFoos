@@ -41,7 +41,9 @@ namespace foosball_asp
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<FoosContext>(options => options.UseSqlite("Filename=./foos.db"));
+            //services.AddDbContext<FoosContext>(options => options.UseSqlite("Filename=./foos.db"));
+            var connectionString = "Host=localhost;Port=5432;Database=foosball;Username=appuser;Password=Testing1234";
+            services.AddDbContext<FoosContext>(options => options.UseNpgsql(connectionString));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<FoosContext>()
                 .AddDefaultTokenProviders();

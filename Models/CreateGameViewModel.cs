@@ -7,16 +7,16 @@ namespace foosball_asp.Models
     public class CreateTeamViewModel {
 
             [Display(Name="Goalie")]
-            public int GoalieId { get; set; }
+            public string GoalieId { get; set; }
 
             [Display(Name="Defender")]
-            public int DefenderId { get; set; }
+            public string DefenderId { get; set; }
 
             [Display(Name="Center")]
-            public int CenterId { get; set; }
+            public string CenterId { get; set; }
 
             [Display(Name="Striker")]
-            public int StrikerId { get; set; }
+            public string StrikerId { get; set; }
     }
     public class CreateGameViewModel 
     {
