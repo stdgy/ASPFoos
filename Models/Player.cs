@@ -16,6 +16,7 @@ namespace foosball_asp.Models
 
         public string UserId { get; set; }
         public User User { get; set; }
+
         public List<Score> Scores { get; set; }
 
         public int TeamId { get; set; }
