@@ -27,6 +27,8 @@ namespace foosball_asp.Models
         public PlayerViewModel Defender { get; set; }
         public PlayerViewModel Center { get; set; }
         public PlayerViewModel Striker { get; set; }
+
+        public int Score { get; set; }
     }
     
     public class GameViewModel 

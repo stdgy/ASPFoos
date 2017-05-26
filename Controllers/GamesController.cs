@@ -20,6 +20,14 @@ namespace foosball_asp.Controllers
                 GameId = game.Id,
                 RedTeam = new TeamViewModel
                 {
+                    Score = game.Teams.Where(t => t.Type == TeamType.Red)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == false) +
+                        game.Teams.Where(t => t.Type == TeamType.Blue)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == true),
                     Goalie = new PlayerViewModel
                     {
                         PlayerId = game.Teams.Where(t => t.Type == TeamType.Red).First()
@@ -63,6 +71,14 @@ namespace foosball_asp.Controllers
                 },
                 BlueTeam = new TeamViewModel
                 {
+                    Score = game.Teams.Where(t => t.Type == TeamType.Blue)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == false) +
+                        game.Teams.Where(t => t.Type == TeamType.Red)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == true),
                     Goalie = new PlayerViewModel
                     {
                         PlayerId = game.Teams.Where(t => t.Type == TeamType.Blue).First()

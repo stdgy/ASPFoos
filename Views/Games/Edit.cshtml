@@ -23,6 +23,7 @@
                 <h3 class="panel-title">Blue Team</h3>
             </div>
             <div class="panel-body">
+                <h3 class="text-center">Score: @Model.BlueTeam.Score</h3>
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="row">
@@ -32,7 +33,7 @@
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Goalie.PlayerId" />
                                         <button class="btn btn-xs btn-default">Score</button>
                                     </form>
-                                    <form asp-controller="Score" asp-action="Goal" method="post" class="pull-left">
+                                    <form asp-controller="Score" asp-action="Create" method="post" class="pull-left">
                                         <input type="hidden" name="id" value="@Model.BlueTeam.Goalie.PlayerId" />
                                         <input type="hidden" name="owngoal" value="1" />
                                         <button class="btn btn-xs btn-danger">Own Goal</button>
@@ -126,6 +127,9 @@
                 <h3 class="panel-title">Red Team</h3>
             </div>
             <div class="panel-body">
+                <h3 class="text-center">
+                    Score: @Model.RedTeam.Score
+                </h3>
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="row">
