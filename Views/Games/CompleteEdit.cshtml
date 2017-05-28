@@ -1,0 +1,179 @@
+@model foosball_asp.Models.CompleteGameViewModel
+
+@{
+    ViewData["Title"] = "CompleteEdit";
+}
+
+<div class="page-header"><h1>Game <small>Completed</small> </h1></div>
+<div class="row">
+    <div>&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Blue Team</h3>
+            </div>
+            <div class="panel-body">
+                <h3 class="text-center">Score: @Model.BlueTeam.Score</h3>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.BlueTeam.Goalie.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Goalie.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.BlueTeam.Defender.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Defender.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.BlueTeam.Center.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Center.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.BlueTeam.Striker.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.BlueTeam.Striker.Username
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Red Team</h3>
+            </div>
+            <div class="panel-body">
+                <h3 class="text-center">
+                    Score: @Model.RedTeam.Score
+                </h3>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.RedTeam.Goalie.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Goalie.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.RedTeam.Defender.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Defender.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.RedTeam.Center.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Center.Username
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-4">
+                            </div>
+                            <div class="col-xs-2 col-sm-4 text-center">
+                                <strong>@Model.RedTeam.Striker.Position</strong>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                @Model.RedTeam.Striker.Username
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h2 class="text-center">Scores</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td></td>
+                    <th class="hidden-xs">Time</th>
+                    <th>Position</th>
+                    <th>Username</th>
+                    <th>Own Goal</th>
+                    <th>Team</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var score in Model.Scores)
+                {
+                    <tr>
+                        <td>
+                            <form asp-controller="Score" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@score.ScoreId" />
+                                <input type="hidden" name="gameId" value="@Model.GameId" />
+                                <button class="btn btn-danger btn-xs">Delete</button>
+                            </form>
+                        </td>
+                        <td class="hidden-xs">@score.Time</td>
+                        <td>@score.Position</td>
+                        <td>@score.Username</td>
+                        <td>@score.OwnGoal</td>
+                        <td>@score.Team</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
