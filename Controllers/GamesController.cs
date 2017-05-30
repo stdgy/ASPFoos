@@ -133,6 +133,128 @@ namespace foosball_asp.Controllers
             };
         }
 
+        private CompleteGameViewModel GetCompleteGameViewModel(Game game)
+        {
+            return new CompleteGameViewModel
+            {
+                StartDate = game.StartDate,
+                EndDate = game.EndDate,
+                GameId = game.Id,
+                RedTeam = new TeamViewModel
+                {
+                    Score = game.Teams.Where(t => t.Type == TeamType.Red)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == false) +
+                        game.Teams.Where(t => t.Type == TeamType.Blue)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == true),
+                    Goalie = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Goalie).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Goalie).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Goalie).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Goalie
+                    },
+                    Defender = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Defender).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Defender).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Defender).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Defender
+                    },
+                    Center = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Center).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Center).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Center).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Center
+                    },
+                    Striker = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Striker).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Striker).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Red).First()
+                            .Players.Where(p => p.Type == PlayerType.Striker).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Striker
+                    }
+                },
+                BlueTeam = new TeamViewModel
+                {
+                    Score = game.Teams.Where(t => t.Type == TeamType.Blue)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == false) +
+                        game.Teams.Where(t => t.Type == TeamType.Red)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Count(s => s.OwnGoal == true),
+                    Goalie = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Goalie).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Goalie).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Goalie).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Goalie
+                    },
+                    Defender = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Defender).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Defender).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Defender).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Defender
+                    },
+                    Center = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Center).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Center).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Center).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Center
+                    },
+                    Striker = new PlayerViewModel
+                    {
+                        PlayerId = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Striker).First().Id,
+                        Username = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Striker).First().User.DisplayName,
+                        Score = game.Teams.Where(t => t.Type == TeamType.Blue).First()
+                            .Players.Where(p => p.Type == PlayerType.Striker).First().Scores.Where(s => s.OwnGoal == false).Count(),
+                        Position = PlayerType.Striker
+                    }
+                },
+                Scores = game.Teams.SelectMany(t => t.Players).SelectMany(p => p.Scores).Select(s => new ScoreViewModel
+                {
+                    ScoreId = s.Id,
+                    Username = s.Player.User.DisplayName,
+                    Position = s.Player.Type,
+                    Time = s.TimeScored,
+                    OwnGoal = s.OwnGoal,
+                    Team = s.Player.Team.Type
+                })
+                .OrderBy(s => s.Time).ToList()
+            };
+        }
+
         public GamesController(FoosContext context)
         {
             _context = context;    
@@ -266,9 +388,14 @@ namespace foosball_asp.Controllers
                 return NotFound();
             }
 
+            if (game.EndDate != null)
+            {
+                // Game is over. So return normal edit view.
+                return View("CompleteEdit", GetCompleteGameViewModel(game));
+            } 
             // Build up a game view model
             var gvm = GetGameViewModel(game);
-
+            
             return View(gvm);
         }
 
