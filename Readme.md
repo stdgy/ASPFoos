@@ -12,4 +12,4 @@ MVC/Web API backend.
 - ASP.Net Core
 - Entity Framework
 - Razor Templates
-- SQLites
+- PostgreSQL
