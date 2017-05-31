@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace foosball_asp.Models
+namespace foosball_asp.Models.GameViewModels
 {
     public class CreateTeamViewModel {
 

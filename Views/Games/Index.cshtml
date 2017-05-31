@@ -1,4 +1,4 @@
-@model IEnumerable<foosball_asp.Models.Game>
+@model IEnumerable<foosball_asp.Models.GameViewModels.IndexViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,8 +12,17 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlueScore)
+            </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
+                    @Html.DisplayNameFor(model => model.RedScore)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.EndDate)
@@ -28,12 +37,21 @@
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlueScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RedScore)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GameId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a>
             </td>
         </tr>
 }

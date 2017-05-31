@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using foosball_asp.Models;
+using foosball_asp.Models.GameViewModels;
 
 namespace foosball_asp.Controllers
 {
@@ -255,6 +256,39 @@ namespace foosball_asp.Controllers
             };
         }
 
+        private IEnumerable<IndexViewModel> GetIndexViewModel(IEnumerable<Game> games)
+        {
+            return games.Select(g => new IndexViewModel
+            {
+                GameId = g.Id,
+                RedScore = g.Teams
+                    .Where(t => t.Type == TeamType.Red)
+                    .SelectMany(t => t.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == false)
+                    .Count() + g.Teams
+                    .Where(t => t.Type == TeamType.Blue)
+                    .SelectMany(t => t.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == true)
+                    .Count(),
+                BlueScore = g.Teams
+                    .Where(t => t.Type == TeamType.Blue)
+                    .SelectMany(t => t.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == false)
+                    .Count() + g.Teams
+                    .Where(t => t.Type == TeamType.Red)
+                    .SelectMany(t => t.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == true)
+                    .Count(),
+                StartDate = g.StartDate,
+                EndDate = g.EndDate,
+                Status = g.EndDate == null ? GameStatus.Ongoing : GameStatus.Ended
+            });
+        }
+
         public GamesController(FoosContext context)
         {
             _context = context;    
@@ -263,7 +297,14 @@ namespace foosball_asp.Controllers
         // GET: Games
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Games.ToListAsync());
+            var games = await _context
+                .Games
+                .Include(g => g.Teams)
+                    .ThenInclude(t => t.Players)
+                        .ThenInclude(p => p.Scores)
+               .ToListAsync();
+
+            return View(GetIndexViewModel(games));
         }
 
         // GET: Games/Details/5

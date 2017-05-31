@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace foosball_asp.Models 
+namespace foosball_asp.Models.GameViewModels
 {
     public class ScoreViewModel
     {
