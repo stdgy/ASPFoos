@@ -7,6 +7,8 @@
   
   <PropertyGroup>
     <UserSecretsId>aspnet-IdentApp-e19fa871-d191-4bd1-a22a-d7a4e1d718b3</UserSecretsId>
+    <RootNamespace>foosball_asp</RootNamespace>
+    <AssemblyName>foosball_asp</AssemblyName>
   </PropertyGroup>
   
   <ItemGroup>
