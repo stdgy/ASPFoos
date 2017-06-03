@@ -14,6 +14,56 @@ namespace foosball_asp.Controllers
     {
         private readonly FoosContext _context;
 
+        private float GetAverageScore(User user)
+        {
+            var totalGames = user.Players
+                .Select(p => p.Team)
+                .Select(t => t.GameId)
+                .Distinct()
+                .Count();
+
+            var totalScore = user.Players
+                .SelectMany(p => p.Scores)
+                .Where(s => s.OwnGoal == false)
+                .Count();
+
+            if (totalGames > 1.0f)
+            {
+                return totalScore / totalGames;
+            }
+
+            return 0.0f;
+        }
+
+        private int GetTotalWins(User user)
+        {
+            return user.Players
+                .Select(p => p.Team)
+                .Distinct() // Get distinct teams user has been on
+                .Where(t => t.Game.EndDate != null) // Where the game is over
+                .Where(t => t.Players // Count of my teams goals
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == false)
+                    .Count() +
+                    t.Game.Teams // Plus other teams own goals
+                    .Where(ot => ot.Id != t.Id)
+                    .SelectMany(ot => ot.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == true)
+                    .Count() > // More than other teams combined goals
+                    t.Game.Teams // Count of other teams goals
+                    .Where(ot => ot.Id != t.Id)
+                    .SelectMany(ot => ot.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == false)
+                    .Count() +
+                    t.Players // Plus our own goals
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == true)
+                    .Count())
+                .Count();
+        }
+
         public UsersController(FoosContext context)
         {
             _context = context;    
