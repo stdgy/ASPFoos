@@ -1,10 +1,12 @@
-@model IEnumerable<foosball_asp.Models.User>
+@model IEnumerable<foosball_asp.Models.UserViewModels.IndexViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Users";
 }
 
-<h2>Index</h2>
+<div class="page-header">
+    <h1>Users <small>List of Users</small></h1>
+</div>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,12 +14,18 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.DisplayName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Birthdate)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DisplayName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AverageScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalWins)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -31,9 +39,17 @@
                 @Html.DisplayFor(modelItem => item.Birthdate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.AverageScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalWins)
+            </td>
+            <td>
+                <div class="btn-group btn-group-xs">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Edit&nbsp;</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Details&nbsp;</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                </div>
             </td>
         </tr>
 }

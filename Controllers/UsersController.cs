@@ -18,18 +18,20 @@ namespace foosball_asp.Controllers
         {
             var totalGames = user.Players
                 .Select(p => p.Team)
-                .Select(t => t.GameId)
+                .Select(t => t.Game)
                 .Distinct()
+                .Where(g => g.EndDate != null)
                 .Count();
 
             var totalScore = user.Players
+                .Where(p => p.Team.Game.EndDate != null)
                 .SelectMany(p => p.Scores)
                 .Where(s => s.OwnGoal == false)
                 .Count();
 
-            if (totalGames > 1.0f)
+            if (totalGames > 0.9f)
             {
-                return totalScore / totalGames;
+                return totalScore / (float)totalGames;
             }
 
             return 0.0f;
@@ -72,7 +74,22 @@ namespace foosball_asp.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var users = _context.Users
+                .Include(u => u.Players)
+                .ThenInclude(p => p.Team)
+                .ThenInclude(t => t.Game)
+                .Include(u => u.Players)
+                .ThenInclude(p => p.Scores)
+                .Select(u => new IndexViewModel
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    DisplayName = u.DisplayName,
+                    Birthdate = u.Birthdate,
+                    AverageScore = GetAverageScore(u),
+                    TotalWins = GetTotalWins(u)
+                });
+            return View(await users.ToListAsync());
         }
 
         // GET: Users/Details/5
