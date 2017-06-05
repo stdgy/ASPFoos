@@ -68,7 +68,7 @@ namespace foosball_asp.Controllers
 
         public UsersController(FoosContext context)
         {
-            _context = context;    
+            _context = context;  
         }
 
         // GET: Users
