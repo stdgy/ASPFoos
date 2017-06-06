@@ -28,13 +28,52 @@ namespace foosball_asp.Controllers
                 .ToListAsync();
         }
 
+        private async Task<List<HighestScoreViewModel>> GetHighestScores()
+        {
+            return await _context.Users
+                .Include(u => u.Players)
+                .Select(u => new
+                {
+                    UserId = u.Id,
+                    DisplayName = u.DisplayName,
+                    TotalGames = u.Players
+                        .Select(p => p.Team)
+                        .Where(t => t.Game.EndDate != null)
+                        .Select(t => t.GameId)
+                        .Distinct()
+                        .Count(),
+                    TotalScore = u.Players
+                        .Where(p => p.Team.Game.EndDate != null)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == false)
+                        .Count()
+                })
+                .Select(u => new
+                {
+                    UserId = u.UserId,
+                    DisplayName = u.DisplayName,
+                    Average = u.TotalGames > 0 ? (u.TotalScore / (float)u.TotalGames) : 0.0f
+                })
+                .OrderByDescending(u => u.Average)
+                .Take(10)
+                .Select(u => new HighestScoreViewModel
+                {
+                    UserId = u.UserId,
+                    DisplayName = u.DisplayName,
+                    AverageScore = u.Average
+                })
+                .ToListAsync();
+        }
+
         public HomeController(FoosContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var LatestGames = await GetLatestGames();
+            var HighScores = await GetHighestScores();
             return View();
         }
 

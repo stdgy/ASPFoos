@@ -15,14 +15,14 @@ namespace foosball_asp.Models.HomeViewModels
 
     public class HighestScoreViewModel
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string DisplayName { get; set; }
         public float AverageScore { get; set; }
     }
 
     public class ShameViewModel // Lowest average scores
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string DisplayName { get; set; }
         public float AverageScore { get; set; }
     }
