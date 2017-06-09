@@ -1,0 +1,17 @@
+﻿@model IEnumerable<foosball_asp.Models.HomeViewModels.LatestGameViewModel>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Winner)</th>
+        </tr>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td><a asp-action="Edit" asp-controller="Games" asp-route-id="@game.GameId">@game.EndDate</a></td>
+                <td>@game.Winner</td>
+            </tr>
+        }
+    </thead>
+</table>

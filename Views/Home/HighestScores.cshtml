@@ -1,0 +1,17 @@
+@model IEnumerable<foosball_asp.Models.HomeViewModels.HighestScoreViewModel>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.AverageScore)</th>
+            <th>@Html.DisplayNameFor(model => model.DisplayName)</th>
+        </tr>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>@game.AverageScore</td>
+                <td><a asp-action="Edit" asp-controller="Users" asp-route-id="@game.UserId">@game.DisplayName</a></td>
+            </tr>
+        }
+    </thead>
+</table>
