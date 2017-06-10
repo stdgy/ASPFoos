@@ -10,15 +10,15 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h3 class="text-center">Latest Games</h3>
+        <h3 class="text-center">@Html.DisplayNameFor(model => model.LatestGames)</h3>
         @Html.Partial("LatestGames", Model.LatestGames)
     </div>
     <div class="col-md-4">
-        <h3 class="text-center">Highest Scorers</h3>
+        <h3 class="text-center">@Html.DisplayNameFor(model => model.HighestScores)</h3>
         @Html.Partial("HighestScores", Model.HighestScores)
     </div>
     <div class="col-md-4">
-        <h3 class="text-center">List of Shame</h3>
+        <h3 class="text-center">@Html.DisplayNameFor(model => model.Shames)</h3>
         @Html.Partial("Shames", Model.Shames)
     </div>
 </div>

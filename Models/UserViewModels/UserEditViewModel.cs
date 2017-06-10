@@ -21,5 +21,9 @@ namespace foosball_asp.Models.UserViewModels
 
         [Required]
         public DateTime Birthdate { get; set; }
+
+        public float AverageScore { get; set; }
+
+        public int TotalWins { get; set; }
     }
 }

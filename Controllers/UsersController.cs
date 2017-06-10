@@ -140,7 +140,14 @@ namespace foosball_asp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
+            var user = await _context.Users
+                .Include(u => u.Players)
+                .ThenInclude(p => p.Team)
+                .ThenInclude(t => t.Game)
+                .Include(u => u.Players)
+                .ThenInclude(p => p.Scores)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
             if (user == null)
             {
                 return NotFound();
@@ -150,7 +157,9 @@ namespace foosball_asp.Controllers
                 Id = user.Id,
                 UserName = user.UserName,
                 DisplayName = user.DisplayName,
-                Birthdate = user.Birthdate
+                Birthdate = user.Birthdate,
+                AverageScore = GetAverageScore(user),
+                TotalWins = GetTotalWins(user)
             });
         }
 

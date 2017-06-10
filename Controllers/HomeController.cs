@@ -109,9 +109,9 @@ namespace foosball_asp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var LatestGames = await GetLatestGames();
-            var HighScores = await GetHighestScores();
-            var LowScores = await GetLowestScores();
+            var LatestGames =  await GetLatestGames();
+            var HighScores =  await GetHighestScores();
+            var LowScores =  await GetLowestScores();
 
             return View(new IndexViewModel
             {
