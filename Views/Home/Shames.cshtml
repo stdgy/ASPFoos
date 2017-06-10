@@ -10,7 +10,7 @@
         {
             <tr>
                 <td>@game.AverageScore</td>
-                <td>@game.DisplayName</td>
+                <td><a asp-action="Edit" asp-controller="Users" asp-route-id="@game.UserId">@game.DisplayName</a></td>
             </tr>
         }
     </thead>
