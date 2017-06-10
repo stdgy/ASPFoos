@@ -22,8 +22,10 @@ namespace foosball_asp.Models.UserViewModels
         [Required]
         public DateTime Birthdate { get; set; }
 
+        [Display(Name = "Average Score")]
         public float AverageScore { get; set; }
 
+        [Display(Name = "Total Wins")]
         public int TotalWins { get; set; }
     }
 }
