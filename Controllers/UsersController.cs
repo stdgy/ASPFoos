@@ -66,6 +66,30 @@ namespace foosball_asp.Controllers
                 .Count();
         }
 
+        private IEnumerable<GameViewModel> GetLatestGames(User user)
+        {
+            return _context.Games
+                .Where(g => g.EndDate != null)
+                .Where(g => g.Teams
+                    .SelectMany(t => t.Players)
+                    .Where(p => p.UserId == user.Id)
+                    .Count() > 1)
+                .OrderBy(g => g.EndDate)
+                .Take(10)
+                .Select(g => new GameViewModel
+                {
+                    GameId = g.Id,
+                    EndDate = g.EndDate,
+                    Score = g.Teams
+                        .SelectMany(t => t.Players)
+                        .Where(p => p.UserId == user.Id)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == false)
+                        .Count(),
+                    Won = false // TODO: Write linq to figure out whether this team won
+                });
+        }
+
         public UsersController(FoosContext context)
         {
             _context = context;  
@@ -159,7 +183,8 @@ namespace foosball_asp.Controllers
                 DisplayName = user.DisplayName,
                 Birthdate = user.Birthdate,
                 AverageScore = GetAverageScore(user),
-                TotalWins = GetTotalWins(user)
+                TotalWins = GetTotalWins(user),
+                LatestGames = GetLatestGames(user)
             });
         }
 

@@ -27,5 +27,7 @@ namespace foosball_asp.Models.UserViewModels
 
         [Display(Name = "Total Wins")]
         public int TotalWins { get; set; }
+
+        public IEnumerable<GameViewModel> LatestGames { get; set; }
     }
 }
