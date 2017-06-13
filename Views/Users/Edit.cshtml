@@ -19,6 +19,32 @@
                 </ul>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Latest Games</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.LatestGames.First().EndDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.LatestGames.First().Score)</th>
+                            <th>@Html.DisplayNameFor(model => model.LatestGames.First().Won)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var game in Model.LatestGames)
+                        {
+                            <tr>
+                                <td>@game.EndDate</td>
+                                <td>@game.Score</td>
+                                <td>@game.Won</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
         <div class="panel panel-default">
@@ -58,36 +84,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Latest Games</h3>
-            </div>
-            <div class="panel-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>@Html.DisplayNameFor(model => model.LatestGames.First().EndDate)</th>
-                            <th>@Html.DisplayNameFor(model => model.LatestGames.First().Score)</th>
-                            <th>@Html.DisplayNameFor(model => model.LatestGames.First().Won)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var game in Model.LatestGames)
-                        {
-                            <tr>
-                                <td>@game.EndDate</td>
-                                <td>@game.Score</td>
-                                <td>@game.Won</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

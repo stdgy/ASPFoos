@@ -86,7 +86,30 @@ namespace foosball_asp.Controllers
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
                         .Count(),
-                    Won = false // TODO: Write linq to figure out whether this team won
+                    Won = ( g.Teams 
+                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() > 0)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == false)
+                        .Count() +
+                        g.Teams
+                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() == 0)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == true)
+                        .Count() ) >
+                        (g.Teams
+                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() == 0)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == false)
+                        .Count() +
+                        g.Teams
+                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() > 0)
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == true)
+                        .Count())
                 });
         }
 
