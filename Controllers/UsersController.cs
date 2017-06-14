@@ -14,61 +14,79 @@ namespace foosball_asp.Controllers
     {
         private readonly FoosContext _context;
 
-        private float GetAverageScore(User user)
+        private async Task<float> GetAverageScore(User user)
         {
-            var totalGames = user.Players
+            var totalGames = _context.Players
+                .Where(p => p.UserId == user.Id)
                 .Select(p => p.Team)
                 .Select(t => t.Game)
                 .Distinct()
                 .Where(g => g.EndDate != null)
-                .Count();
+                .CountAsync();
 
-            var totalScore = user.Players
+            var totalScore = _context.Players
+                .Where(p => p.UserId == user.Id)
                 .Where(p => p.Team.Game.EndDate != null)
                 .SelectMany(p => p.Scores)
                 .Where(s => s.OwnGoal == false)
-                .Count();
+                .CountAsync();
 
-            if (totalGames > 0.9f)
+            await Task.WhenAll(new Task[] { totalGames, totalScore });
+
+            if (totalGames.Result > 0.9f)
             {
-                return totalScore / (float)totalGames;
+                return totalScore.Result / (float)totalGames.Result;
             }
 
             return 0.0f;
         }
 
-        private int GetTotalWins(User user)
+        private async Task<int> GetTotalWins(User user)
         {
-            return user.Players
-                .Select(p => p.Team)
-                .Distinct() // Get distinct teams user has been on
-                .Where(t => t.Game.EndDate != null) // Where the game is over
-                .Where(t => t.Players // Count of my teams goals
+            return await _context.Players
+                .Include(p => p.Scores)
+                .Include(p => p.Team)
+                .ThenInclude(t => t.Game)
+                .ThenInclude(g => g.Teams)
+                .Select(p => new { Team = p.Team, Game = p.Team.Game })
+                .Distinct()
+                .Where(g => (g.Game
+                    .Teams
+                    .Where(t => t.Id == g.Team.Id)
+                    .SelectMany(t => t.Players)
                     .SelectMany(p => p.Scores)
                     .Where(s => s.OwnGoal == false)
-                    .Count() +
-                    t.Game.Teams // Plus other teams own goals
-                    .Where(ot => ot.Id != t.Id)
-                    .SelectMany(ot => ot.Players)
-                    .SelectMany(p => p.Scores)
-                    .Where(s => s.OwnGoal == true)
-                    .Count() > // More than other teams combined goals
-                    t.Game.Teams // Count of other teams goals
-                    .Where(ot => ot.Id != t.Id)
-                    .SelectMany(ot => ot.Players)
-                    .SelectMany(p => p.Scores)
-                    .Where(s => s.OwnGoal == false)
-                    .Count() +
-                    t.Players // Plus our own goals
+                    .Count()
+                    +
+                    g.Game
+                    .Teams
+                    .Where(t => t.Id != g.Team.Id)
+                    .SelectMany(t => t.Players)
                     .SelectMany(p => p.Scores)
                     .Where(s => s.OwnGoal == true)
                     .Count())
-                .Count();
+                    >
+                    (g.Game
+                    .Teams
+                    .Where(t => t.Id != g.Team.Id)
+                    .SelectMany(t => t.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == false)
+                    .Count()
+                    +
+                    g.Game
+                    .Teams
+                    .Where(t => t.Id == g.Team.Id)
+                    .SelectMany(t => t.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == true)
+                    .Count()))
+                .CountAsync();
         }
 
-        private IEnumerable<GameViewModel> GetLatestGames(User user)
+        private async Task<List<GameViewModel>> GetLatestGames(User user)
         {
-            return _context.Games
+            return await _context.Games
                 .Where(g => g.EndDate != null)
                 .Where(g => g.Teams
                     .SelectMany(t => t.Players)
@@ -86,7 +104,7 @@ namespace foosball_asp.Controllers
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
                         .Count(),
-                    Won = ( g.Teams 
+                    Won = (g.Teams
                         .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() > 0)
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
@@ -97,7 +115,7 @@ namespace foosball_asp.Controllers
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == true)
-                        .Count() ) >
+                        .Count()) >
                         (g.Teams
                         .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() == 0)
                         .SelectMany(t => t.Players)
@@ -110,7 +128,7 @@ namespace foosball_asp.Controllers
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == true)
                         .Count())
-                });
+                }).ToListAsync();
         }
 
         public UsersController(FoosContext context)
@@ -121,22 +139,20 @@ namespace foosball_asp.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var users = _context.Users
-                .Include(u => u.Players)
-                .ThenInclude(p => p.Team)
-                .ThenInclude(t => t.Game)
-                .Include(u => u.Players)
-                .ThenInclude(p => p.Scores)
+            var users = await _context.Users
+                .OrderBy(u => u.DisplayName)
+                .Take(50)
                 .Select(u => new IndexViewModel
                 {
                     Id = u.Id,
                     UserName = u.UserName,
                     DisplayName = u.DisplayName,
                     Birthdate = u.Birthdate,
-                    AverageScore = GetAverageScore(u),
-                    TotalWins = GetTotalWins(u)
-                });
-            return View(await users.ToListAsync());
+                    AverageScore = 0
+                })
+                .ToListAsync();
+            
+            return View(users);
         }
 
         // GET: Users/Details/5
@@ -188,12 +204,10 @@ namespace foosball_asp.Controllers
             }
 
             var user = await _context.Users
-                .Include(u => u.Players)
-                .ThenInclude(p => p.Team)
-                .ThenInclude(t => t.Game)
-                .Include(u => u.Players)
-                .ThenInclude(p => p.Scores)
                 .SingleOrDefaultAsync(m => m.Id == id);
+
+            var averageScore = await GetAverageScore(user);
+            var totalWins = await GetTotalWins(user);
 
             if (user == null)
             {
@@ -205,9 +219,9 @@ namespace foosball_asp.Controllers
                 UserName = user.UserName,
                 DisplayName = user.DisplayName,
                 Birthdate = user.Birthdate,
-                AverageScore = GetAverageScore(user),
-                TotalWins = GetTotalWins(user),
-                LatestGames = GetLatestGames(user)
+                AverageScore = await GetAverageScore(user),
+                TotalWins = await GetTotalWins(user),
+                LatestGames = await GetLatestGames(user)
             });
         }
 
