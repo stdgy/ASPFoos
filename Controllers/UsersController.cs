@@ -16,7 +16,7 @@ namespace foosball_asp.Controllers
 
         private async Task<float> GetAverageScore(User user)
         {
-            var totalGames = _context.Players
+            var totalGames = await _context.Players
                 .Where(p => p.UserId == user.Id)
                 .Select(p => p.Team)
                 .Select(t => t.Game)
@@ -24,18 +24,17 @@ namespace foosball_asp.Controllers
                 .Where(g => g.EndDate != null)
                 .CountAsync();
 
-            var totalScore = _context.Players
+            var totalScore = await _context.Players
                 .Where(p => p.UserId == user.Id)
                 .Where(p => p.Team.Game.EndDate != null)
                 .SelectMany(p => p.Scores)
                 .Where(s => s.OwnGoal == false)
                 .CountAsync();
+            
 
-            await Task.WhenAll(new Task[] { totalGames, totalScore });
-
-            if (totalGames.Result > 0.9f)
+            if (totalGames > 0.9f)
             {
-                return totalScore.Result / (float)totalGames.Result;
+                return totalScore / (float)totalGames;
             }
 
             return 0.0f;
@@ -43,43 +42,28 @@ namespace foosball_asp.Controllers
 
         private async Task<int> GetTotalWins(User user)
         {
-            return await _context.Players
-                .Include(p => p.Scores)
-                .Include(p => p.Team)
-                .ThenInclude(t => t.Game)
-                .ThenInclude(g => g.Teams)
-                .Select(p => new { Team = p.Team, Game = p.Team.Game })
-                .Distinct()
-                .Where(g => (g.Game
-                    .Teams
-                    .Where(t => t.Id == g.Team.Id)
-                    .SelectMany(t => t.Players)
+            return await _context.Teams
+                .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() > 0)
+                .Where(t => (t.Players
                     .SelectMany(p => p.Scores)
                     .Where(s => s.OwnGoal == false)
-                    .Count()
-                    +
-                    g.Game
-                    .Teams
-                    .Where(t => t.Id != g.Team.Id)
-                    .SelectMany(t => t.Players)
+                    .Count() +
+                    t.Game.Teams
+                    .Where(te => te.Id != t.Id)
+                    .SelectMany(te => te.Players)
                     .SelectMany(p => p.Scores)
                     .Where(s => s.OwnGoal == true)
-                    .Count())
+                    .Count() )
                     >
-                    (g.Game
-                    .Teams
-                    .Where(t => t.Id != g.Team.Id)
-                    .SelectMany(t => t.Players)
-                    .SelectMany(p => p.Scores)
-                    .Where(s => s.OwnGoal == false)
-                    .Count()
-                    +
-                    g.Game
-                    .Teams
-                    .Where(t => t.Id == g.Team.Id)
-                    .SelectMany(t => t.Players)
+                    (t.Players
                     .SelectMany(p => p.Scores)
                     .Where(s => s.OwnGoal == true)
+                    .Count() +
+                    t.Game.Teams
+                    .Where(te => te.Id != t.Id)
+                    .SelectMany(te => te.Players)
+                    .SelectMany(p => p.Scores)
+                    .Where(s => s.OwnGoal == false)
                     .Count()))
                 .CountAsync();
         }
@@ -148,7 +132,19 @@ namespace foosball_asp.Controllers
                     UserName = u.UserName,
                     DisplayName = u.DisplayName,
                     Birthdate = u.Birthdate,
-                    AverageScore = 0
+                    AverageScore = (float)u.Players
+                        .Where(p => p.Team.Game.EndDate != null)
+                        .SelectMany(p => p.Scores)
+                        .Where(s => s.OwnGoal == false)
+                        .Count() / 
+                        Math.Max(
+                            u.Players
+                                .Where(p => p.Team.Game.EndDate != null)
+                                .Select(p => p.Team)
+                                .Select(t => t.Game)
+                                .Distinct()
+                                .Count(),
+                            1)
                 })
                 .ToListAsync();
             
@@ -205,9 +201,6 @@ namespace foosball_asp.Controllers
 
             var user = await _context.Users
                 .SingleOrDefaultAsync(m => m.Id == id);
-
-            var averageScore = await GetAverageScore(user);
-            var totalWins = await GetTotalWins(user);
 
             if (user == null)
             {
