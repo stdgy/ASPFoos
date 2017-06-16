@@ -70,12 +70,11 @@ namespace foosball_asp.Controllers
 
         private async Task<List<GameViewModel>> GetLatestGames(User user)
         {
-            return await _context.Games
+            return await _context.Players
+                .Where(p => p.UserId == user.Id)
+                .Select(p => p.Team.Game)
                 .Where(g => g.EndDate != null)
-                .Where(g => g.Teams
-                    .SelectMany(t => t.Players)
-                    .Where(p => p.UserId == user.Id)
-                    .Count() > 1)
+                .Distinct()
                 .OrderBy(g => g.EndDate)
                 .Take(10)
                 .Select(g => new GameViewModel
@@ -88,31 +87,42 @@ namespace foosball_asp.Controllers
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
                         .Count(),
-                    Won = (g.Teams
-                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() > 0)
+                    Won = (g.Teams // TODO: This is broken. 
+                        .Where(t => t.Players
+                            .Where(p => p.UserId == user.Id)
+                            .Count() > 0)
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
-                        .Count() +
+                        .Count() + 
                         g.Teams
-                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() == 0)
+                        .Where(t => t.Players
+                            .Where(p => p.UserId != user.Id)
+                            .Count() > 0)
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == true)
-                        .Count()) >
+                        .Count()) 
+                        >
                         (g.Teams
-                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() == 0)
+                        .Where(t => t.Players
+                            .Where(p => p.UserId != user.Id)
+                            .Count() > 0)
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
                         .Count() +
                         g.Teams
-                        .Where(t => t.Players.Where(p => p.UserId == user.Id).Count() > 0)
+                        .Where(t => t.Players
+                            .Where(p => p.UserId == user.Id)
+                            .Count() > 0)
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == true)
                         .Count())
-                }).ToListAsync();
+                })
+                .ToListAsync();
+            
         }
 
         public UsersController(FoosContext context)
@@ -144,7 +154,37 @@ namespace foosball_asp.Controllers
                                 .Select(t => t.Game)
                                 .Distinct()
                                 .Count(),
-                            1)
+                            1),
+                    TotalWins = u.Players
+                        .Select(p => new { Team = p.Team, Game = p.Team.Game})
+                        .Where(g => g.Game.EndDate != null)
+                        .Where(g => (g.Game.Teams
+                            .Where(t => t.Id == g.Team.Id)
+                            .SelectMany(t => t.Players)
+                            .SelectMany(p => p.Scores)
+                            .Where(s => s.OwnGoal == false)
+                            .Count() +
+                            g.Game.Teams
+                            .Where(t => t.Id != g.Team.Id)
+                            .SelectMany(t => t.Players)
+                            .SelectMany(p => p.Scores)
+                            .Where(s => s.OwnGoal == true)
+                            .Count()) >
+                            (g.Game.Teams
+                            .Where(t => t.Id != g.Team.Id)
+                            .SelectMany(t => t.Players)
+                            .SelectMany(p => p.Scores)
+                            .Where(s => s.OwnGoal == false)
+                            .Count() +
+                            g.Game.Teams
+                            .Where(t => t.Id == g.Team.Id)
+                            .SelectMany(t => t.Players)
+                            .SelectMany(p => p.Scores)
+                            .Where(s => s.OwnGoal == true)
+                            .Count())
+                            )
+                        .Distinct()
+                        .Count()
                 })
                 .ToListAsync();
             
