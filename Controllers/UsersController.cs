@@ -70,6 +70,7 @@ namespace foosball_asp.Controllers
 
         private async Task<List<GameViewModel>> GetLatestGames(User user)
         {
+            
             return await _context.Players
                 .Where(p => p.UserId == user.Id)
                 .Select(p => p.Team.Game)
@@ -87,35 +88,29 @@ namespace foosball_asp.Controllers
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
                         .Count(),
-                    Won = (g.Teams // TODO: This is broken. 
-                        .Where(t => t.Players
-                            .Where(p => p.UserId == user.Id)
-                            .Count() > 0)
+                    Won = (g.Teams
+                        .Where(t => t.Players.Any(p => p.UserId == user.Id))
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
-                        .Count() + 
+                        .Count() 
+                        +
                         g.Teams
-                        .Where(t => t.Players
-                            .Where(p => p.UserId != user.Id)
-                            .Count() > 0)
+                        .Where(t => !t.Players.Any(p => p.UserId == user.Id))
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == true)
-                        .Count()) 
+                        .Count())
                         >
-                        (g.Teams
-                        .Where(t => t.Players
-                            .Where(p => p.UserId != user.Id)
-                            .Count() > 0)
+                         (g.Teams
+                        .Where(t => !t.Players.Any(p => p.UserId == user.Id))
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == false)
-                        .Count() +
+                        .Count()
+                        +
                         g.Teams
-                        .Where(t => t.Players
-                            .Where(p => p.UserId == user.Id)
-                            .Count() > 0)
+                        .Where(t => t.Players.Any(p => p.UserId == user.Id))
                         .SelectMany(t => t.Players)
                         .SelectMany(p => p.Scores)
                         .Where(s => s.OwnGoal == true)
