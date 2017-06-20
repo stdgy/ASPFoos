@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using foosball_asp.Models;
 using foosball_asp.Models.AccountViewModels;
 using foosball_asp.Services;
+using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
 namespace foosball_asp.Controllers
 {
@@ -24,6 +26,7 @@ namespace foosball_asp.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly FoosContext _context;
 
         public AccountController(
             UserManager<User> userManager,
@@ -31,7 +34,8 @@ namespace foosball_asp.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            FoosContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +43,7 @@ namespace foosball_asp.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
         //
@@ -113,20 +118,33 @@ namespace foosball_asp.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.Email, Email = model.Email, DisplayName = model.DisplayName };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+
+                // Check if a user with this display name exists. If it does, we'll have to return an error.
+                var count = await _context.Users.Where(u => u.DisplayName == user.DisplayName).CountAsync();
+
+                if (count > 0)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    ModelState.AddModelError(String.Empty, "Display name already exists. Please choose another.");
                 }
-                AddErrors(result);
+                else
+                {
+                    var result = await _userManager.CreateAsync(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+                        // Send an email with this link
+                        //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                        //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                        //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation(3, "User created a new account with password.");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    AddErrors(result);
+                }
+                
             }
 
             // If we got this far, something failed, redisplay form
