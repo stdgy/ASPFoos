@@ -8,9 +8,10 @@ using foosball_asp.Models;
 namespace foosballasp.Migrations
 {
     [DbContext(typeof(FoosContext))]
-    partial class FoosContextModelSnapshot : ModelSnapshot
+    [Migration("20170620043854_UniqueDisplayName")]
+    partial class UniqueDisplayName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)

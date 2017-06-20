@@ -8,6 +8,7 @@ namespace foosball_asp.Models
     public class User : IdentityUser {
         [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
+
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
 
