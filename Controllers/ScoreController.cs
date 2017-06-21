@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using foosball_asp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace foosball_asp.Controllers
 {
@@ -21,6 +22,7 @@ namespace foosball_asp.Controllers
         // POST: Score/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> Create(int id, int? owngoal)
         {
             // Get player with that ID and add a score
@@ -51,6 +53,7 @@ namespace foosball_asp.Controllers
         // POST: Score/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> Delete(int id, int gameId)
         {
             var score = _context.Scores

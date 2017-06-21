@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using foosball_asp.Models;
 using foosball_asp.Models.UserViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace foosball_asp.Controllers
 {
@@ -258,6 +259,7 @@ namespace foosball_asp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,DisplayName,Birthdate")] UserEditViewModel user)
         {
             if (id != user.Id)
@@ -300,6 +302,7 @@ namespace foosball_asp.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -320,6 +323,7 @@ namespace foosball_asp.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);

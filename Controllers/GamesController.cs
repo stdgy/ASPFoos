@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using foosball_asp.Models;
 using foosball_asp.Models.GameViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace foosball_asp.Controllers
 {
@@ -342,6 +343,7 @@ namespace foosball_asp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(CreateGameViewModel game)
         {
             if (ModelState.IsValid)
@@ -445,6 +447,7 @@ namespace foosball_asp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate")] Game game)
         {
             if (id != game.Id)
@@ -475,6 +478,9 @@ namespace foosball_asp.Controllers
             return View(game);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Finish(int id)
         {
             var game = await _context.Games
@@ -518,6 +524,7 @@ namespace foosball_asp.Controllers
         // POST: Games/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var game = await _context.Games.SingleOrDefaultAsync(m => m.Id == id);
