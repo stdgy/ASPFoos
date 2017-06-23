@@ -15,17 +15,38 @@ namespace foosball_asp.Controllers
 
         private async Task<List<LatestGameViewModel>> GetLatestGames()
         {
-            return await _context.Games
+            var games = await _context.Games
+                .Include(g => g.Teams)
+                .ThenInclude(t => t.Players)
+                .ThenInclude(p => p.Scores)
                 .Where(g => g.EndDate != null)
                 .OrderBy(g => g.EndDate)
                 .Take(10)
-                .Select(g => new LatestGameViewModel
-                {
-                    GameId = g.Id,
-                    EndDate = g.EndDate,
-                    Winner = TeamType.Red
-                })
                 .ToListAsync();
+
+            return games.Select(g => new LatestGameViewModel
+            {
+                GameId = g.Id,
+                EndDate = g.EndDate,
+                Winner = g.Teams
+                        .SelectMany(t => t.Players)
+                        .SelectMany(p => p.Scores)
+                        .GroupBy(s => s.Player.Team)
+                        .Select(t => new
+                        {
+                            TeamType = t.Key.Type,
+                            TotalScore = t.Where(s => s.OwnGoal == false).Count() +
+                                t.Key.Game.Teams.Where(te => te.Id != t.Key.Id)
+                                .SelectMany(te => te.Players)
+                                .SelectMany(p => p.Scores)
+                                .Where(s => s.OwnGoal == true)
+                                .Count()
+                        })
+                        .OrderBy(t => t.TotalScore)
+                        .First()
+                        .TeamType
+            })
+                .ToList();
         }
 
         private async Task<List<HighestScoreViewModel>> GetHighestScores()
